@@ -1,16 +1,13 @@
 const array = process.argv[2];
 
 const calcSum = (array) => {
-  let sum = 0;
-  for (let element of array) {
-    if (Array.isArray(element)) {
-      sum = sum + calcSum(element);
+ return array.reduce((prev, next) => {
+    if (Array.isArray(next)) {
+      return prev + calcSum(next);
     } else {
-      sum = sum + element;
+      return prev + next;
     }
-  }
-
-  return(sum);
+  }, 0);
 };
 
 console.log(calcSum(JSON.parse(array)));
