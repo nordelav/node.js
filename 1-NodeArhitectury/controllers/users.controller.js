@@ -23,12 +23,12 @@ export async function addHabit(value, options, date) {
 }
 
 export async function listHabits() {
-  console.table(await listUsers());
+  console.table(await listHabits());
 }
 
 
 export async function deleteHabit(id) {
-  await deleteUser(id);
+  await deleteHabit(id);
   console.log("Звичку видалено !")
 }
 
@@ -40,11 +40,11 @@ export async function updateHabit(id, name, freq) {
 }
 
 export async function markDone(id, date) {
-  const habit = await getUser(id);
+  const habit = await getHabit(id);
   habit.hits.push(date);
 
 
-  await patchUser(id, { hits: habit.hits })
+  await patchHabit(id, { hits: habit.hits })
 
 
 }
@@ -53,7 +53,7 @@ export async function markDone(id, date) {
 
 export async function showStats() {
 
-  printStats(await listUsers());
+  printStats(await listHabits());
 }
 
 
