@@ -1,34 +1,27 @@
-// 
+
 
 export function parseArgs(args) {
   const result = {
     command: null,
-    value: null,
-    options: null
+    options: {}
   };
 
-  let i = 0;
 
-  while (i < args.length) {
-    const current = args[i];
-
-    if (current.startsWith('--')) {
-      const key = current.replace(/^--/, '');
-
-      const next = args[i + 1];
-      if (!result.command) {
-        
-        result.command = key;
-        result.value=next;
-      } else {
-        result.options = next;
-      }
-
-      i += 2;
-    } else {
-      i++;
-    }
+ for(let i=0;i<args.length;i++){
+  if (args.length && !args[0].startsWith('--')) {
+    result.command = args[0];
   }
 
+  if (args[i].startsWith('--')){
+    const key = args[i].replace(/^--/, '');
+      const value = args[i + 1];
+
+      result.options[key] = value;
+  }
+
+
+
+ }
+ 
   return result;
 }

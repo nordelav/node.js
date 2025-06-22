@@ -1,20 +1,18 @@
 import * as habits from './controllers/users.controller.js';
-import { parseArgs } from "./helpers/parseArgs.js";
+ 
+export async function route(parsedData,date) {
 
-export async function route(args, date) {
+  const {command, options} =  parsedData;
+  console.log(parsedData);
 
-  const {command, value, options} =  parseArgs(args);
-
-  
-  console
-  if(!value) {
-    console.log("Додайте значення, яке варто змінити !")
+  if(options && typeof options === 'object'&&Object.keys(options).length === 0){
+    console.log("Не введено умови !");
     return;
   }
 
-  switch (command) {
+   switch (command) {
     case 'add':
-      await habits.addHabit(value,options,date);
+      await habits.addHabit(options.name,options.freq,date);
        break;
     case 'list':
       await habits.listHabits();
@@ -25,14 +23,14 @@ export async function route(args, date) {
       break;
 
     case 'delete':
-      await habits.deleteHabit(value);
+      await habits.deleteHabit(options.id);
       break;
     case 'update':
-      await habits.updateHabit(value);
+      await habits.updateHabit(options.id,options.name,options.freq);
       break;
 
     case 'done':
-      await habits.markDone(value);
+      await habits.markDone(options.id);
       break;
 
 

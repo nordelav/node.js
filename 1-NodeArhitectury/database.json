@@ -5,7 +5,6 @@
     "hits": [],
     "creationDate": "2025-06-24",
     "freq": "weekly"
-
   },
   {
     "id": "1750594200053",
@@ -20,7 +19,6 @@
     "hits": [],
     "creationDate": "2025-06-18",
     "freq": "weekly"
-
   },
   {
     "id": "1750594200055",
@@ -42,7 +40,6 @@
     "hits": [],
     "creationDate": "2025-06-10",
     "freq": "daily"
-
   },
   {
     "id": "1750594200058",
@@ -50,7 +47,6 @@
     "hits": [],
     "creationDate": "2025-06-25",
     "freq": "weekly"
-
   },
   {
     "id": "1750594200059",
@@ -58,7 +54,6 @@
     "hits": [],
     "creationDate": "2025-06-08",
     "freq": "daily"
-
   },
   {
     "id": "1750594200060",
@@ -70,7 +65,6 @@
     ],
     "creationDate": "2025-06-19",
     "freq": "daily"
-
   },
   {
     "id": "1750594200061",
@@ -84,7 +78,6 @@
     ],
     "creationDate": "2025-06-23",
     "freq": "weekly"
-
   },
   {
     "id": "1750595523812",
@@ -92,6 +85,12 @@
     "hits": [],
     "creationDate": "2025-06-24",
     "freq": "weekly"
-
+  },
+  {
+    "id": "1750612469701",
+    "name": "Пити воду",
+    "hits": [],
+    "creationDate": "2025-06-24",
+    "freq": "weekly"
   }
- ]
+]
