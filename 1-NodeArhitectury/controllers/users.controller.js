@@ -1,50 +1,50 @@
 
 import { getToday } from '../helpers/getToday.js';
 import {
-  listHabits, getHabit, addHabit,
-  patchHabit, deleteHabit
+  listInfo, getInfo, addInfo,
+  patchInfo, deleteInfo
 } from '../services/users.service.js';
 
 
 export async function addHabit(value, options, date) {
 
-  if (value && options && options === "daily" || options === "weekly" || options === "monthly") {
+  if (value && options && options === 'daily' || options === 'weekly' || options === 'monthly') {
     const body = {
       name: value, hits: [], creationDate: date, freq: options,
-    }
-    await addUser(body);
+    };
+    await addInfo(body);
     
-    console.log("Звичка успішно додана !")
+    console.log('Звичка успішно додана !');
 
   } else {
-    console.log("Frequency error: please use daily, weekly or monthly");
+    console.log('Frequency error: please use daily, weekly or monthly');
     return;
   }
 }
 
 export async function listHabits() {
-  console.table(await listHabits());
+  console.table(await listInfo());
 }
 
 
 export async function deleteHabit(id) {
-  await deleteHabit(id);
-  console.log("Звичку видалено !")
+  await deleteInfo(id);
+  console.log('Звичку видалено !');
 }
 
 export async function updateHabit(id, name, freq) {
 
-  await patchUser(id, { name: name, freq: freq });
+  await patchInfo(id, { name: name, freq: freq });
 
 
 }
 
 export async function markDone(id, date) {
-  const habit = await getHabit(id);
+  const habit = await getInfo(id);
   habit.hits.push(date);
 
 
-  await patchHabit(id, { hits: habit.hits })
+  await patchInfo(id, { hits: habit.hits });
 
 
 }
@@ -53,7 +53,7 @@ export async function markDone(id, date) {
 
 export async function showStats() {
 
-  printStats(await listHabits());
+  printStats(await listInfo());
 }
 
 

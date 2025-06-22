@@ -20,11 +20,11 @@ export default defineConfig([
     rules: {
       'no-unused-vars': 'warn',
       'no-undef':       'warn',
-      'semi':["error", "always"],
-      "quotes":["error","single"],
-      "no-console":"warn"
+      'semi':['error', 'always'],
+      'quotes':['error','single'],
+      'no-console':'warn'
     },
   }
   
   
-])
+]);
