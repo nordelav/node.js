@@ -5,11 +5,7 @@ export async function route(parsedData,date) {
   const {command, options} =  parsedData;
   console.log(parsedData);
 
-  if(options && typeof options === 'object'&&Object.keys(options).length === 0){
-    console.log("Не введено умови !");
-    return;
-  }
-
+ 
    switch (command) {
     case 'add':
       await habits.addHabit(options.name,options.freq,date);
@@ -30,7 +26,7 @@ export async function route(parsedData,date) {
       break;
 
     case 'done':
-      await habits.markDone(options.id);
+      await habits.markDone(options.id, date);
       break;
 
 
