@@ -60,7 +60,9 @@ export async function showStats() {
 
 function printStats(habits) {
   const today = new Date(getToday());
+  console.log(today);
   const toDate = (s) => new Date(s);
+  const list=[];
 
 
 
@@ -72,14 +74,18 @@ function printStats(habits) {
     return d;
   }
 
+
   function getExpectedCount(freq, created) {
+
     const delta = Math.floor((today - created) / (1000 * 60 * 60 * 24));
     if (freq === 'daily') return Math.min(7, delta + 1);
     if (freq === 'weekly') return Math.min(4, Math.floor(delta / 7) + 1);
     if (freq === 'monthly') return Math.min(6, Math.floor(delta / 30) + 1);
     return 0;
+
   }
 
+ 
   for (const h of habits) {
     const created = toDate(h.creationDate);
     const start = getPeriodStart(h.freq);
@@ -87,8 +93,10 @@ function printStats(habits) {
     const hits = h.hits?.filter(date => toDate(date) >= start).length || 0;
     const percent = expected ? Math.round((hits / expected) * 100) : '—';
 
-    console.log(`${h.name.padEnd(20)} | ${h.freq.padEnd(7)} | ${hits}/${expected} | ${percent}%`);
+     list.push({name:h.name,freq:h.freq, expected:`${hits}/${expected}`, percentage:`${percent}` })
   }
+
+  console.table(list);
 }
 
  
