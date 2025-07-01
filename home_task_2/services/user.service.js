@@ -1,5 +1,5 @@
-const service = require("./service");
-const router = require("../helpers/router");
+const service = require("./users.service");
+const router = require("../routes/users/route");
 
 router.addRoute("GET", "/", async (req, res) => {
   try {
