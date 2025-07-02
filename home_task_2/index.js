@@ -1,16 +1,8 @@
 import http from 'node:http';
-// import router from './lib/router';
-// const { handle } = require("./services/user.service");
 import { scan, dispatch } from './lib/router.js';
 
 await scan();
-const server = http.createServer((req, res) => {
-  // handle(req, res);
-dispatch(req,res);
-  
-  
- 
-});
+const server = http.createServer(dispatch);
 
 const PORT = 3001;
 server.listen(PORT, () => {

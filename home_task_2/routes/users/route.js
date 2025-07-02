@@ -1,7 +1,19 @@
-export function GET (req,res) {
-  console.log("Get");
+import { getAll, create } from "../../models/users.model.js";
+import { json, bodyJSON } from "../../lib/helpers.js";
+export async function GET({ res }) {
+
+
+  return json(res, 200, await getAll());
+
 }
 
-export function POST (req,res) {
-  console.log("Post");
+export async function POST({ req, res }) {
+  try {
+    const body = await bodyJSON(req);
+    const data = await create(body);
+    return json(res, 201, data);
+  } catch {
+    return json(res, 400, { error: "Invalid JSON !" })
+  }
+
 } 

@@ -45,13 +45,13 @@ export async function dispatch(req, res) {
 
 
   for (const [_, info] of routes) {
-    if (segm.lenght !== info.segments.lenght) continue;
+    if (segm.length !== info.segments.length) continue;
 
 
     const params = {};
     let matched = true;
 
-    for (let i = 0; i < segm.lenght; i++) {
+    for (let i = 0; i < segm.length; i++) {
       const t = info.segments[i];
       const u = segm[i];
       if (t.startsWith(':')) {
