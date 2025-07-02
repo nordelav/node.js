@@ -1,49 +1,92 @@
-import {promises as fs, readdir} from 'node:fs';
-import{join} from 'node:path';
-import { it } from 'node:test';
+import { promises as fs, readdir } from 'node:fs';
+import path, { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
 
 const routes = new Map();
-const METHODS = ["GET","POST","DELETE", "PATCH"];
+const METHODS = ["GET", "POST", "DELETE", "PATCH"];
 
-export async function scan(dir = 'routes', base='' ){
+export async function scan(dir = 'routes') {
 
-const list = (await fs.readdir(dir, { recursive:true, withFileTypes:true})).filter((item)=> item.name==="route.js");
+  const list = (await fs.readdir(dir, { recursive: true, withFileTypes: true })).filter((item) => item.name === "route.js");
 
-console.log(list);
-list.forEach(element => {
-  console.log(element);
-   const segments = element.path.split("/").filter(item=>item!==dir).map((seg)=>seg.startsWith("[")?":"+seg.slice(1,-1):seg)
-   
-   const index= "/"+segments.join("/");  
+  for (const element of list) {
+    const segments = element.path.split("/").filter(item => item !== dir).map((seg) => seg.startsWith("[") ? ":" + seg.slice(1, -1) : seg)
 
-   if(!routes.has(index)){
-    routes.set(index,{segments, methods:{}});
+    const index = "/" + segments.join("/");
+    const absPath = resolve(element.path, element.name);
 
+    const spec = pathToFileURL(absPath).href + `?t=${Date.now()}`;
 
+    if (!routes.has(index)) {
+      routes.set(index, { segments, methods: {} });
+      const mod = await import(spec);
 
-    // await 
-    console.log(routes);
-   }
-});
-
-  // for (const entry of await fs.readdir(dir, {withFileTypes:true})){
-  //   console.log(entry);
-  //   const path= join(dir,entry.name);
-  //   console.log(path);
-
-  //   if (entry.isDirectory()){
-  //     await scan(path, join(base, entry.name));
-  //     continue;
-  //   }
-  //    if (entry.name ==='route.js') continue;
-
-    
-  //    const tpl = "/"+ base.split("/").map((seg)=>seg.startsWith("[")?":"+seg.slice(1,-1):seg).join("/");
-  //    console.log( tpl); 
-    
-  // }
+      for (const m of METHODS) {
+        if (mod[m] && typeof mod[m] === "function") {
+          routes.get(index).methods[m] = mod[m];
+        }
+      }
+    }
+  };
+  return routes;
 }
 
 
+export async function dispatch(req, res) {
+  let path = req.url.split('?')[0]
+  if (path.startsWith('/')) path = path.slice(1);
+  if (path.endsWith('/')) path = path.slice(0, 1);
 
- 
+  console.log(path);
+
+ const  segm = path ? path.split("/") : [];
+  const method = req.method;
+
+
+  for (const [_, info] of routes) {
+    if (segm.lenght !== info.segments.lenght) continue;
+
+
+    const params = {};
+    let matched = true;
+
+    for (let i = 0; i < segm.lenght; i++) {
+      const t = info.segments[i];
+      const u = segm[i];
+      if (t.startsWith(':')) {
+
+        params[t.slice(1)] = u;
+      }
+      else if (t !== u) {
+        matched = false;
+        break;
+      }
+
+    }
+    if (!matched) continue;
+
+    const handler = info.methods[method];
+
+    if (!handler) {
+      res.writeHead(405, { Allowed: Object.keys(info.methods).join(', ') });
+      return res.end('Method Not Allowed!');
+    }
+
+    try {
+      return await handler({ req, res, params });
+    } catch (err) {
+      res.writeHead(500);
+      return res.end('Internal Error!')
+    }
+
+  }
+
+  res.writeHead(404);
+  res.end('Not Found');
+
+
+
+
+
+}

@@ -1,20 +1,7 @@
-const routes = {};
-
-function addRoute(method, path, handler) {
-  const key = `${method.toUpperCase()} ${path}`;
-  routes[key] = handler;
+export function GET (req,res) {
+  console.log("Get");
 }
 
-function handle(req, res) {
-  const key = `${req.method} ${req.url}`;
-  const handler = routes[key];
-
-  if (handler) {
-    handler(req, res);
-  } else {
-    res.writeHead(404, { "Content-type": "application/json" });
-    res.end(JSON.stringify({ error: "Not Found" }));
-  }
-}
-
-module.exports = { addRoute, handle  };
+export function POST (req,res) {
+  console.log("Post");
+} 
