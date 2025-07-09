@@ -1,0 +1,17 @@
+FROM node:20-alpine AS builder
+WORKDIR /app/
+COPY src ./src
+COPY eslint.config.js ./
+COPY  .eslintignore ./
+COPY package*.json ./
+RUN npm ci
+RUN npm run lint && npm run lint:fix
+RUN npm prune --omit=dev
+
+FROM node:20-alpine AS runtime
+WORKDIR /home/node/app
+USER node 
+COPY --from=builder --chown=node:node /app ./     
+
+EXPOSE 3000
+CMD ["node", "src/index.js"]
