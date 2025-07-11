@@ -22,5 +22,21 @@ services:
       timeout: 10s
       retries: 5
 
+  api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.kv.dev
+    ports: ["8081:3000"]
+    environment:
+        REDIS_URL: http://redis-like:4000
+        CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./src:/app/src    
+    depends_on: [redis-like]
+    networks: [internal]
+    profiles: ['dev']
+
+
+
 networks: 
   internal:

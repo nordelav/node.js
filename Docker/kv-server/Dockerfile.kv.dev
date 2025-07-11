@@ -1,0 +1,12 @@
+FROM node:20-alpine AS dev
+WORKDIR /app/
+COPY src ./src
+COPY eslint.config.js ./
+COPY  .eslintignore ./
+COPY package*.json ./
+RUN npm ci
+RUN npm run lint && npm run lint:fix
+
+
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
