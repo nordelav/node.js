@@ -48,9 +48,9 @@ export function createApp() {
 
   app.use(scopePerRequest(container));
 
-  app.use('/api', uploadsRouter(upload, uploadDir));
+  // app.use('/api', uploadsRouter(upload, uploadDir));
 
-  attachStaticHandler(app)
+  // attachStaticHandler(app)
 
   if (config.env === 'development') {
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(generateSpecs()));
