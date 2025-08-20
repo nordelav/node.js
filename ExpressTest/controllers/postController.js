@@ -8,6 +8,7 @@ let posts = [
 
 export const getPosts = (req, res, next) => {
   console.log(req.query);
+
   const limit = parseInt(req.query.limit);
 
   if (!isNaN(limit) && limit > 0) {

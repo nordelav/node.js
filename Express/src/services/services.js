@@ -1,13 +1,33 @@
-export class BrewsService{
+export class BrewsService {
   static scope = 'scoped';
 
-  constructor(brewsModel){
+  constructor(brewsModel) {
     console.log('BrewsService initalized');
     this.brewsModel = brewsModel;
   }
 
-  getAll() {
-    return this.brewsModel.all();
+  getAll({ method, ratingMin } = {}) {
+
+    const data = this.brewsModel.all();
+
+    const min = ratingMin != null ? Number(ratingMin) : null;
+
+    
+    let out = data;
+
+    if (min != null && !Number.isNaN(min)) {
+      out = out.filter(b => {
+        const rating = b.rating ?? b.Rating; 
+        return typeof rating === 'number' && rating >= min;
+      });
+    }
+
+    if (method) {
+      const m = (b) => (b.method ?? b.Method);
+      out = out.filter(b => m(b) === method);
+    }
+
+    return out;
   }
 
   getOne(id) {
